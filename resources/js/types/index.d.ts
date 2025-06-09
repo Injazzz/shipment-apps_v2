@@ -1,5 +1,19 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { LucideIcon } from 'lucide-react';
 import type { Config } from 'ziggy-js';
+
+export interface PageProps {
+    props: {
+        summary: any;
+        trends: any[];
+        cargoComparison: any[];
+        topShips: any[];
+        monthlyOperations: any[];
+    };
+    version: string;
+    url: string;
+    component: string;
+}
 
 export interface Auth {
     user: User;

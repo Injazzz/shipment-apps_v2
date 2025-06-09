@@ -11,11 +11,19 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/co
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
 import { formatDate, formatNumber } from '@/lib/utils';
+import { BreadcrumbItem } from '@/types';
 import { ShipOperationsPageProps } from '@/types/ship-operations';
 import { Head, Link, router } from '@inertiajs/react';
 import { CalendarIcon, DownloadIcon, EditIcon, EyeIcon, FileSpreadsheetIcon, FilterIcon, PlusIcon, SearchIcon, Trash2Icon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
+
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'Dashboard',
+        href: '/dashboard',
+    },
+];
 
 export default function ShipOperationsIndex({ operations, shippingLines, filters, flash }: ShipOperationsPageProps) {
     const [searchTerm, setSearchTerm] = useState(filters.search || '');
@@ -141,7 +149,7 @@ export default function ShipOperationsIndex({ operations, shippingLines, filters
     const yearOptions = Array.from({ length: 10 }, (_, i) => currentYear - i);
 
     return (
-        <AppLayout>
+        <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Ship Operations" />
 
             <div className="space-y-2 p-6">

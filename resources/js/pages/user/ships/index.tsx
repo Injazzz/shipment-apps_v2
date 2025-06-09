@@ -9,6 +9,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/co
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
 import { formatNumber } from '@/lib/utils';
+import { BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import { Edit, Filter, Plus, Search, Trash2 } from 'lucide-react';
 import { useState } from 'react';
@@ -70,6 +71,13 @@ interface ShipsIndexProps {
     };
 }
 
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'Dashboard',
+        href: '/dashboard',
+    },
+];
+
 export default function ShipsIndex({ ships, countries, shippingLines, filters }: ShipsIndexProps) {
     const [searchTerm, setSearchTerm] = useState(filters.search || '');
     const [selectedShippingLine, setSelectedShippingLine] = useState(filters.shipping_line || '');
@@ -110,7 +118,7 @@ export default function ShipsIndex({ ships, countries, shippingLines, filters }:
     };
 
     return (
-        <AppLayout>
+        <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Data Kapal" />
             <div className="space-y-2 p-6">
                 <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">

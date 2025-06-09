@@ -157,3 +157,17 @@
         @apply bg-background text-foreground;
     }
 }
+
+.recharts-tooltip-wrapper {
+    backdrop-filter: blur(8px);
+    background-color: rgba(255, 255, 255, 0.8) !important;
+    border-radius: 0.5rem;
+    box-shadow:
+        0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Untuk dark mode */
+.dark .recharts-tooltip-wrapper {
+    background-color: rgba(15, 23, 42, 0.8) !important;
+}
