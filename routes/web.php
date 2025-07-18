@@ -37,7 +37,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 Route::get('/top-ships', [ShipOperationController::class, 'getTopShips'])->name('top-ships');
                 Route::get('/monthly-data', [ShipOperationController::class, 'getMonthlyData'])->name('monthly-data');
                 Route::get('/summary', [ShipOperationController::class, 'getSummaryData'])->name('summary');
-                Route::get('/export-report', [ShipOperationController::class, 'exportAnalyticsReport'])->name('export-report');
+                // Route::get('/export-report', [ShipOperationController::class, 'exportAnalyticsReport'])->name('export-report');
             });
         });
 

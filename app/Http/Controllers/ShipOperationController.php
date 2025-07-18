@@ -185,7 +185,7 @@ class ShipOperationController extends Controller
         ]);
 
         $period = $request->get('period', 'monthly');
-        $year = $request->get('year', Carbon::now()->year);
+        $yearsInput = $request->get('years', Carbon::now()->year);
 
         // Validasi periode
         $validPeriods = ['monthly', 'quarterly', 'semi-annual', 'annual'];
@@ -193,33 +193,47 @@ class ShipOperationController extends Controller
             $period = 'monthly';
         }
 
-        // Validasi tahun
-        $year = (int) $year;
-        if ($year < 2020 || $year > Carbon::now()->year + 1) {
-            $year = Carbon::now()->year;
+        // Konversi years ke array
+        $years = is_array($yearsInput) ? $yearsInput : explode(',', $yearsInput);
+        $years = array_unique(array_map('intval', $years));
+
+        // Validasi tahun (2020 - tahun depan)
+        $currentYear = Carbon::now()->year;
+        $years = array_filter($years, fn($y) => $y >= 2020 && $y <= $currentYear + 1);
+
+        // Default ke tahun berjalan jika tidak ada yang valid
+        if (empty($years)) {
+            $years = [$currentYear];
         }
 
-        $filename = $this->generateExportFilename($period, $year);
+        // Urutkan tahun dari terkecil ke terbesar
+        sort($years);
+
+        $filename = $this->generateExportFilename($period, $years);
 
         return Excel::download(
-            new ShipOperationExport($filters, $period, $year),
+            new ShipOperationExport($filters, $period, $years,),
             $filename
         );
     }
 
-    private function generateExportFilename(string $period, int $year): string
+    private function generateExportFilename(string $period, array $years): string
     {
         $periodNames = [
             'monthly' => 'Bulanan',
-            'quarterly' => 'Kuartalan',
-            'semi-annual' => 'Semesteran',
+            'quarterly' => 'Triwulan',
+            'semi-annual' => 'Semester',
             'annual' => 'Tahunan'
         ];
 
         $periodName = $periodNames[$period] ?? 'Bulanan';
-        $timestamp = Carbon::now()->format('Y-m-d_H-i-s');
 
-        return "Laporan_Produksi_{$periodName}_{$year}_{$timestamp}.xlsx";
+        if (count($years) > 1) {
+            $yearsRange = reset($years) . '-' . end($years);
+            return "Laporan Produksi {$periodName} {$yearsRange}.xlsx";
+        }
+
+        return "Laporan Produksi {$periodName} {$years[0]}.xlsx";
     }
 
     public function import(Request $request)
